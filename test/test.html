@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,20 @@
 
     <link rel="stylesheet" href="test.css">
 </head>
+
 <body>
     <!-- Finished initialized -->
+    <script src="./iris.js"></script>
+
+    <div id="content"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        document.getElementById('content').innerHTML =
+            marked.parse('# Marked in the browser\n\nRendered by **marked**.');
+
+        console.log(marked.parse('# Marked in the browser\n\nRendered by **marked**.'))
+    </script>
 </body>
+
 </html>
