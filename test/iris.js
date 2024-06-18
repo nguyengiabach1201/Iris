@@ -18,6 +18,12 @@ class Iris {
     }
 
     output() {
-        
+        function typeWriter(txt, id) {
+            if (i < txt.length) {
+                document.getElementById(id).innerHTML += txt.charAt(i);
+                i++;
+                setTimeout(typeWriter, speed);
+            }
+        }
     }
 }
