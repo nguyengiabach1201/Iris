@@ -54,18 +54,32 @@ export class Parser {
     return this.tokens[this.current++];
   }
 
-  textStatement(token) {
-    return new Text(token.content);
+  textStatement(token, inline) {
+    let content = token.content;
+
+    while (this.peek().type === Tokens["Eol"] && !inline) {
+      if (this.current + 1 < this.tokens.length) {
+        this.current++;
+        if (this.tokens[this.current].type === Tokens["Text"]) {
+          content +=
+            " " + this.tokens[this.current].content;
+          this.current++;
+        }
+      }
+    }
+
+    return new Text(content);
   }
 
   choiceStatement(token) {
     let content = "";
     let body = [];
-    
+
     if (this.peek().type === Tokens["Text"]) {
-      content = this.textStatement(this.peek());
-    } else this.error(`Expected 'Text' but got '${this.peek().type}'`, token.line);
-    
+      content = this.textStatement(this.peek(), true);
+    } else
+      this.error(`Expected 'Text' but got '${this.peek().type}'`, token.line);
+
     return new Choice(content, body);
   }
 
@@ -75,7 +89,7 @@ export class Parser {
 
       switch (token.type) {
         case Tokens["Text"]: {
-          this.ast.push(this.textStatement(token));
+          this.ast.push(this.textStatement(token, false));
           break;
         }
         case Tokens["Choice"]: {
