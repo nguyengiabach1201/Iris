@@ -59,10 +59,10 @@ export class Parser {
 
     while (this.peek().type === Tokens["Eol"] && !inline) {
       if (this.current + 1 < this.tokens.length) {
-        this.current++;
+        this.advance();
         if (this.tokens[this.current].type === Tokens["Text"]) {
           content += " " + this.tokens[this.current].content;
-          this.current++;
+          this.advance();
         }
       }
     }
@@ -75,18 +75,55 @@ export class Parser {
     let body = [];
 
     if (this.peek().type === Tokens["Text"]) {
-      content = this.textStatement(this.peek(), true).content;
+      content = this.textStatement(this.advance(), true).content;
     } else
       this.error(`Expected 'Text' but got '${this.peek().type}'`, token.line);
+
+    while (
+      this.peek().type !== Tokens["Eof"] &&
+      this.peek().type !== Tokens["Section"] &&
+      this.peek().type !== Tokens["Choice"]
+    ) {
+      if (this.peek().type === Tokens["Text"]) {
+        body.push(this.textStatement(this.advance(), false));
+      } else if (this.peek().type === Tokens["Choice"]) {
+        body.push(this.choiceStatement(this.advance()));
+      } else if (this.peek().type === Tokens["Diversion"]) {
+        body.push(this.diversionStatement(this.advance()));
+      } else this.advance();
+    }
 
     return new Choice(content, body);
   }
 
-  sectionStatement(token) {}
+  sectionStatement(token) {
+    let name = "";
+    let body = [];
+
+    if (this.peek().type === Tokens["Text"]) {
+      name = this.textStatement(this.advance(), true).content;
+    } else
+      this.error(`Expected 'Text' but got '${this.peek().type}'`, token.line);
+
+    while (
+      this.peek().type !== Tokens["Eof"] &&
+      this.peek().type !== Tokens["Section"]
+    ) {
+      if (this.peek().type === Tokens["Text"]) {
+        body.push(this.textStatement(this.advance(), false));
+      } else if (this.peek().type === Tokens["Choice"]) {
+        body.push(this.choiceStatement(this.advance()));
+      } else if (this.peek().type === Tokens["Diversion"]) {
+        body.push(this.diversionStatement(this.advance()));
+      } else this.advance();
+    }
+
+    return new Section(name, body);
+  }
 
   diversionStatement(token) {
     if (this.peek().type === Tokens["Text"]) {
-      return new Diversion(this.textStatement(this.peek(), true).content);
+      return new Diversion(this.textStatement(this.advance(), true).content);
     } else
       this.error(`Expected 'Text' but got '${this.peek().type}'`, token.line);
 
@@ -121,8 +158,6 @@ export class Parser {
           break;
         }
       }
-
-      // console.log(token.type);
     }
     console.log(this.ast);
   }
