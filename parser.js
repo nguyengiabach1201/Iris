@@ -61,8 +61,7 @@ export class Parser {
       if (this.current + 1 < this.tokens.length) {
         this.current++;
         if (this.tokens[this.current].type === Tokens["Text"]) {
-          content +=
-            " " + this.tokens[this.current].content;
+          content += " " + this.tokens[this.current].content;
           this.current++;
         }
       }
@@ -76,11 +75,22 @@ export class Parser {
     let body = [];
 
     if (this.peek().type === Tokens["Text"]) {
-      content = this.textStatement(this.peek(), true);
+      content = this.textStatement(this.peek(), true).content;
     } else
       this.error(`Expected 'Text' but got '${this.peek().type}'`, token.line);
 
     return new Choice(content, body);
+  }
+
+  sectionStatement(token) {}
+
+  diversionStatement(token) {
+    if (this.peek().type === Tokens["Text"]) {
+      return new Diversion(this.textStatement(this.peek(), true).content);
+    } else
+      this.error(`Expected 'Text' but got '${this.peek().type}'`, token.line);
+
+    return new Diversion("");
   }
 
   parse() {
@@ -97,9 +107,11 @@ export class Parser {
           break;
         }
         case Tokens["Section"]: {
+          this.ast.push(this.sectionStatement(token));
           break;
         }
         case Tokens["Diversion"]: {
+          this.ast.push(this.diversionStatement(token));
           break;
         }
         case Tokens["Eol"]: {
