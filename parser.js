@@ -9,12 +9,14 @@ export const Types = {
 
 export class Text {
   constructor(content) {
+    this.type = Tokens["Text"];
     this.content = content;
   }
 }
 
 export class Choice {
   constructor(content, body) {
+    this.type = Tokens["Choice"];
     this.content = content;
     this.body = body;
   }
@@ -22,6 +24,7 @@ export class Choice {
 
 export class Section {
   constructor(name, body) {
+    this.type = Tokens["Section"];
     this.name = name;
     this.body = body;
   }
@@ -29,6 +32,7 @@ export class Section {
 
 export class Diversion {
   constructor(section) {
+    this.type = Tokens["Diversion"];
     this.section = section;
   }
 }
@@ -38,10 +42,13 @@ export class Parser {
     this.tokens = tokens;
     this.ast = [];
     this.current = 0;
+
+    this.errored = false;
   }
 
   error(msg, line) {
-    console.log(`Error: ${msg} at the starting of line ${line}`);
+    console.error(`Error: ${msg} at the starting of line ${line}.\n`);
+    this.errored = true;
   }
 
   peek() {
@@ -57,12 +64,18 @@ export class Parser {
   textStatement(token, inline) {
     let content = token.content;
 
+    let line = token.line;
     while (this.peek().type === Tokens["Eol"] && !inline) {
-      if (this.current + 1 < this.tokens.length) {
+      if (this.current < this.tokens.length) {
         this.advance();
         if (this.tokens[this.current].type === Tokens["Text"]) {
-          content += " " + this.tokens[this.current].content;
-          this.advance();
+          if (this.tokens[this.current].line - line <= 1) {
+            content += " " + this.tokens[this.current].content;
+            line = this.tokens[this.current].line;
+            this.advance();
+          } else {
+            break;
+          }
         }
       }
     }
@@ -159,6 +172,5 @@ export class Parser {
         }
       }
     }
-    console.log(this.ast);
   }
 }
