@@ -26,11 +26,6 @@ export class Lexer {
     return this.source[this.current];
   }
 
-  peekNext() {
-    if (this.current + 1 >= this.source.length) return "\0";
-    return this.source[this.current + 1];
-  }
-
   advance() {
     if (this.current >= this.source.length) return "\0";
     return this.source[this.current++];
@@ -55,6 +50,14 @@ export class Lexer {
         }
         case " ":
           break;
+        case "\t":
+          break;
+        case "#": {
+          while (this.peek() !== "\n" && this.peek() !== "\0") {
+            this.advance();
+          }
+          break;
+        }
         case "+": {
           this.tokens.push(new Token(Tokens["Plus"], "+"));
           break;
@@ -75,6 +78,5 @@ export class Lexer {
     }
 
     this.tokens.push(new Token(Tokens["Eof"], "\0"));
-    return this.tokens;
   }
 }
