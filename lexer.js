@@ -1,16 +1,17 @@
 export const Tokens = {
-  Content: "Content",
-  Plus: "Plus",
-  Minus: "Minus",
-  Greater: "Greater",
+  Text: "Text",
+  Choice: "Choice",
+  Section: "Section",
+  Diversion: "Diversion",
   Eol: "Eol",
   Eof: "Eof",
 };
 
 export class Token {
-  constructor(type, content) {
+  constructor(type, content, line) {
     this.type = type;
     this.content = content;
+    this.line = line;
   }
 }
 
@@ -19,6 +20,7 @@ export class Lexer {
     this.source = source;
     this.tokens = [];
     this.current = 0;
+    this.line = 1;
   }
 
   peek() {
@@ -32,7 +34,7 @@ export class Lexer {
   }
 
   scan() {
-    const content = (char) => {
+    const text = (char) => {
       let result = char; // Starting char
       while (this.peek() !== "\0" && this.peek() !== "\n") {
         result += this.advance();
@@ -45,7 +47,8 @@ export class Lexer {
 
       switch (char) {
         case "\n": {
-          this.tokens.push(new Token(Tokens["Eol"], "\n"));
+          this.tokens.push(new Token(Tokens["Eol"], "\n", this.line));
+          this.line++;
           break;
         }
         case " ":
@@ -59,24 +62,24 @@ export class Lexer {
           break;
         }
         case "+": {
-          this.tokens.push(new Token(Tokens["Plus"], "+"));
+          this.tokens.push(new Token(Tokens["Choice"], "+", this.line));
           break;
         }
         case "-": {
-          this.tokens.push(new Token(Tokens["Minus"], "-"));
+          this.tokens.push(new Token(Tokens["Section"], "-", this.line));
           break;
         }
         case ">": {
-          this.tokens.push(new Token(Tokens["Greater"], ">"));
+          this.tokens.push(new Token(Tokens["Diversion"], ">", this.line));
           break;
         }
         default: {
-          let c = content(char);
-          this.tokens.push(new Token(Tokens["Content"], c));
+          let c = text(char);
+          this.tokens.push(new Token(Tokens["Text"], c, this.line));
         }
       }
     }
 
-    this.tokens.push(new Token(Tokens["Eof"], "\0"));
+    this.tokens.push(new Token(Tokens["Eof"], "\0", this.line));
   }
 }
