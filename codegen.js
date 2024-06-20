@@ -20,7 +20,7 @@ export class CodeGen {
       });
       list.push(`}`);
     } else if (node.type === Types["Text"]) {
-      list.push(`text("${node.content}");`);
+      list.push(`return text("${node.content}");`);
     } else if (node.type === Types["Choice"]) {
       let choiceList = [];
       node.body.forEach((child) => {
@@ -50,7 +50,7 @@ export class CodeGen {
         list[i] = "";
       }
 
-      if (list[i - 1] && list[i - 1].startsWith("text") && list[i] != "}") {
+      if (list[i - 1] && list[i - 1].startsWith("return text") && list[i] != "}") {
         list[i - 1] =
           list[i - 1].substr(0, list[i - 1].length - 2) +
           `,()=>{${list[i]}}` +
