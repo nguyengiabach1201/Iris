@@ -3,8 +3,9 @@ import { Types } from "./parser.js";
 export class CodeGen {
   constructor(ast) {
     this.ast = ast;
-    // this.html = "";
-    this.js = "let text=console.log;(()=>{";
+    this.html = "";
+    this.css = "";
+    this.js = "";
     this.current = 0;
   }
 
@@ -29,6 +30,7 @@ export class CodeGen {
       this.push(node);
       i++;
     });
+    this.js = "let text=console.log;(()=>{" + this.js;
     this.js += "})();";
     console.log(this.js, "\n");
   }
