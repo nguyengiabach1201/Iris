@@ -2,6 +2,8 @@ import { Lexer } from "./lexer.js";
 import { Parser } from "./parser.js";
 import { CodeGen } from "./codegen.js";
 
+import * as fs from "node:fs";
+
 export class Iris {
   constructor(src) {
     this.src = src;
@@ -19,41 +21,20 @@ export class Iris {
       codegen.generate();
     }
 
-    // eval(codegen.js);
+    try {
+      fs.writeFileSync("./new-iris-game.html", codegen.html);
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
 
-const src = `
-> Hi
-- Hi
-hello 1, 2, 3
-Hello
-Test
-> end
-+ Hello
-> Test
-+Test
-#+ +
--Test
-Ok, test
-Very well!
-
-Hello
-- None`;
-
-// const test = `
-// Hi
-// Hello
-// + Hello
-// + Test
-// > Hi
-
-// - Hi
-// 1 2 3
-
-// 4
-
-// `
-
-const iris = new Iris(src);
-iris.run();
+for (let i = 2; i < process.argv.length; i++) {
+  try {
+    const src = fs.readFileSync(process.argv[i], "utf-8");
+    const iris = new Iris(src);
+    iris.run();
+  } catch (err) {
+    console.error(err);
+  }
+}
