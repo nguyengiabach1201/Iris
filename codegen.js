@@ -4,7 +4,7 @@ export class CodeGen {
   constructor(ast) {
     this.ast = ast;
     // this.html = "";
-    this.js = "let text = console.log;(()=>{";
+    this.js = "let text=console.log;(()=>{";
     this.current = 0;
   }
 
