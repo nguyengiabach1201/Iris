@@ -35,10 +35,14 @@ export class CodeGen {
     });
 
     for (let i = this.jsList.length - 1; i >= 0; i -= 1) {
-      if (this.jsList[i - 1] && this.jsList[i - 1].startsWith("text")) {
+      if (
+        this.jsList[i - 1] &&
+        this.jsList[i - 1].startsWith("text") &&
+        this.jsList[i] != "}"
+      ) {
         this.jsList[i - 1] =
           this.jsList[i - 1].substr(0, this.jsList[i - 1].length - 2) +
-          `,()=>{${this.jsList[i]}}` +
+          `,()=>{ ${this.jsList[i]} }` +
           this.jsList[i - 1].substr(this.jsList[i - 1].length - 2);
         this.jsList[i] = "";
       }
