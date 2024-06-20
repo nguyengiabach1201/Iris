@@ -41,7 +41,6 @@ export class CodeGen {
           `,()=>{${this.jsList[i]}}` +
           this.jsList[i - 1].substr(this.jsList[i - 1].length - 2);
         this.jsList[i] = "";
-        console.log(this.jsList[i - 1]);
       }
     }
 
@@ -49,7 +48,7 @@ export class CodeGen {
       this.js += node;
     });
 
-    this.js = "let text=console.log;(()=>{" + this.js;
+    this.js = "(()=>{" + this.js;
     this.js += "})();";
     console.log(this.js, "\n");
   }
