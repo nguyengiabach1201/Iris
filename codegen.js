@@ -22,6 +22,7 @@ export class CodeGen {
     } else if (node.type === Types["Text"]) {
       this.jsList.push(`text("${node.content}");`);
     } else if (node.type === Types["Choice"]) {
+      this.jsList.push(`choice("${node.content}");`);
     } else if (node.type === Types["Diversion"]) {
       this.jsList.push(
         `if(${node.section}){return ${node.section}();}else{console.error('Error: Section ${node.section} is undefined')}`,
