@@ -4,7 +4,7 @@ export class CodeGen {
   constructor(ast) {
     this.ast = ast;
     // this.html = "";
-    this.js = "let text = console.log;";
+    this.js = "let text = console.log;(()=>{";
     this.current = 0;
   }
 
@@ -19,17 +19,17 @@ export class CodeGen {
       this.js += `text("${node.content}");`;
     } else if (node.type === Types["Choice"]) {
     } else if (node.type === Types["Diversion"]) {
-      this.js += `if(${node.section}){${node.section}();}else{console.error('Error: Section ${node.section} is undefined')}`;
+      this.js += `if(${node.section}){return ${node.section}();}else{console.error('Error: Section ${node.section} is undefined')}`;
     }
   }
 
   generate() {
     let i = 0;
     this.ast.forEach((node) => {
-      // console.log(node);
       this.push(node);
       i++;
     });
-    console.log(this.js);
+    this.js += "})();";
+    console.log(this.js, "\n");
   }
 }
