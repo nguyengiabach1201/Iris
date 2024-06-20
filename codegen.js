@@ -12,7 +12,7 @@ export class CodeGen {
     this.current = 0;
   }
 
-  push(node) {
+  push(node, list) {
     if (node.type === Types["Section"]) {
       this.jsList.push(`function ${node.name}(){`);
       node.body.forEach((child) => {
@@ -22,6 +22,12 @@ export class CodeGen {
     } else if (node.type === Types["Text"]) {
       this.jsList.push(`text("${node.content}");`);
     } else if (node.type === Types["Choice"]) {
+      let choiceList = [];
+      node.body.forEach((child) => {
+        choiceList.push(this.push(child));
+      });
+      node.body = choiceList;
+      console.log(choiceList);
       this.jsList.push(`choice("${node.content}");`);
     } else if (node.type === Types["Diversion"]) {
       this.jsList.push(
@@ -30,24 +36,24 @@ export class CodeGen {
     }
   }
 
-  generate() {
-    this.ast.forEach((node) => {
-      this.push(node);
-    });
-
-    for (let i = this.jsList.length - 1; i >= 0; i -= 1) {
-      if (
-        this.jsList[i - 1] &&
-        this.jsList[i - 1].startsWith("text") &&
-        this.jsList[i] != "}"
-      ) {
-        this.jsList[i - 1] =
-          this.jsList[i - 1].substr(0, this.jsList[i - 1].length - 2) +
-          `,()=>{ ${this.jsList[i]} }` +
-          this.jsList[i - 1].substr(this.jsList[i - 1].length - 2);
-        this.jsList[i] = "";
+  analise(list) {
+    for (let i = list.length - 1; i >= 0; i -= 1) {
+      if (list[i - 1] && list[i - 1].startsWith("text") && list[i] != "}") {
+        list[i - 1] =
+          list[i - 1].substr(0, list[i - 1].length - 2) +
+          `,()=>{ ${list[i]} }` +
+          list[i - 1].substr(list[i - 1].length - 2);
+        list[i] = "";
       }
     }
+  }
+
+  generate() {
+    this.ast.forEach((node) => {
+      this.push(node, this.jsList);
+    });
+
+    this.analise(this.jsList);
 
     this.jsList.forEach((node) => {
       this.js += node;
