@@ -3,7 +3,10 @@ A text-based adventure game engine
 
 ## How to use
 ### Syntax
-
+1. Paragraphs
+2. Comments
+3. Sections
+4. Diversions
 
 ### Build
 Run
