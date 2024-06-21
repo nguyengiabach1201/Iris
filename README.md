@@ -8,9 +8,25 @@ A text-based adventure game engine
 
 ### Syntax
 **1. Paragraphs**
-The most basic part of an Iris 
+
+The most basic part of an ***Iris*** project is a paragraph.
+```
+Hello, welcome to Iris
+```
+This will output the content.
+
+Texts on adjacent lines will be counted as one, e.g:
+```
+Iris
+is awesome
+```
+Is the same as:
+```
+Iris is awesome
+```
 
 **2. Comments**
+
 ```
 # This is a comment, and this is unprintable!
 ```
@@ -18,7 +34,9 @@ The most basic part of an Iris
 **3. Sections**
 
 
+
 **4. Diversions**
+
 
 
 ### Build
