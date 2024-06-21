@@ -2,9 +2,9 @@
 A text-based adventure game engine
 
 ## How to use
-Iris has its own markup language, called Iris-script.
+***Iris*** has its own markup language, called ***Iris-script***.
 
-Iris-script is incredibly easy to learn, within a few minutes, you will able to make a text-based game yourself!
+***Iris-script*** is incredibly easy to learn, within ***a few minutes***, you will able to make a text-based game ***yourself***!
 
 ### Syntax
 **1. Paragraphs**
