@@ -69,7 +69,17 @@ You are on the street, you really want to go home
 
 **4. Choices**
 
+A choice is indicated by a `+` (plus sign). The choice will flow into the next instruction when you have chosen.
 
+```
+You see a cup of coffee
++ Drink it
+You blacked out
+> Die
++ Not drink it
+Not thing happens
+> Survive
+```
 
 ### Build
 Run
