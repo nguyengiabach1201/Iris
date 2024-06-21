@@ -9,7 +9,7 @@ export class Iris {
     this.src = src;
   }
 
-  run() {
+  run(filename) {
     const lexer = new Lexer(this.src);
     lexer.scan();
 
@@ -22,7 +22,7 @@ export class Iris {
     }
 
     try {
-      fs.writeFileSync("./new-iris-game.html", codegen.html);
+      fs.writeFileSync(`./${filename}.html`, codegen.html);
     } catch (err) {
       console.error(err);
     }
@@ -33,7 +33,9 @@ for (let i = 2; i < process.argv.length; i++) {
   try {
     const src = fs.readFileSync(process.argv[i], "utf-8");
     const iris = new Iris(src);
-    iris.run();
+
+    var filename = process.argv[i].replace(/^.*[\\/]/, '');
+    iris.run(filename);
   } catch (err) {
     console.error(err);
   }
