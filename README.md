@@ -7,7 +7,9 @@ A text-based adventure game engine
 
 
 **2. Comments**
-
+```
+// This is a comment, and this is unprintable!
+```
 
 **3. Sections**
 
