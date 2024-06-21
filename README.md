@@ -43,9 +43,31 @@ A comment is ignored by ***Iris*** so it wouldn't be printed:
 
 **3. Sections**
 
+Sections are the most important part of ***Iris***, for it is the structural unit of the game.
 
+A section starts with a `-` (minus sign), and within every section are normal paragraphs, comments, or choices.
 
-**4. Diversions**
+```
+- Section_one
+Hello, welcome to this section
+- Section_two
+Zzz, Zzz, section two is sleeping Zzz, Zzz
+```
+
+Contents within sections won't be printed out unless you call that section. Call a section with a `>` (arrow sign), as follows:
+
+```
+1/1/2000
+You are on the street, you really want to go home
+> House
+- House
+"Welcome home, son" - your mother said
+...
+```
+
+***Notes:*** When you name a section, don't use space or any special characters, otherwise the game will cause errors!!!
+
+**4. Choices**
 
 
 
