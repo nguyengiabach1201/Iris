@@ -6,3 +6,4 @@ A text-based adventure game engine
 ### Build
 
 ## Contact
+Feel free to fork this repository or open issues. For any further information, please contact [my email](mailto:nguyengiabach1201@gmail.com).
