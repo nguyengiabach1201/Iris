@@ -25,7 +25,7 @@ Is the same as:
 Iris is awesome
 ```
 
-To have a break between your paragraphs, just simply have a break line between them
+To have a break between your paragraphs, just simply have a break line between them:
 ```
 This is the first paragraph!
 
@@ -34,6 +34,9 @@ This is the second one!
 
 **2. Comments**
 
+Text will be printed out by default unless it is a comment.
+
+A comment is ignored by ***Iris*** so it wouldn't be printed:
 ```
 # This is a comment, and this is unprintable!
 ```
