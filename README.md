@@ -25,6 +25,13 @@ Is the same as:
 Iris is awesome
 ```
 
+To have a break between your paragraphs, just simply have a break line between them
+```
+This is the first paragraph!
+
+This is the second one!
+```
+
 **2. Comments**
 
 ```
