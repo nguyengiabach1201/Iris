@@ -163,6 +163,10 @@ export class Parser {
     return new Diversion("");
   }
 
+  varStatement(token) {
+    return new Var();
+  }
+
   parse() {
     while (this.peek().type !== Tokens["Eof"]) {
       let token = this.advance();
@@ -182,6 +186,10 @@ export class Parser {
         }
         case Tokens["Diversion"]: {
           this.ast.push(this.diversionStatement(token));
+          break;
+        }
+        case Tokens["Var"]: {
+          this.ast.push(this.varStatement(token));
           break;
         }
         case Tokens["Eol"]: {
