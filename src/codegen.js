@@ -50,7 +50,7 @@ export class CodeGen {
         list[i] = "";
       }
 
-      if (list[i - 1] && list[i - 1].startsWith("return text") && list[i] != "}") {
+      if (list[i - 1] && list[i - 1].startsWith("return text") && list[i] != "}" && !list[i].startsWith("function")) {
         list[i - 1] =
           list[i - 1].substr(0, list[i - 1].length - 2) +
           `,()=>{${list[i]}}` +
