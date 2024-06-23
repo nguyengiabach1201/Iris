@@ -1,9 +1,14 @@
+import { equal } from "node:assert";
+
 export const Tokens = {
   Text: "Text",
   Choice: "Choice",
   Section: "Section",
   Diversion: "Diversion",
+
   Var: "Var",
+  Equal: "Equal",
+
   Eol: "Eol",
   Eof: "Eof",
 };
@@ -76,6 +81,10 @@ export class Lexer {
         }
         case "~": {
           this.tokens.push(new Token(Tokens["Var"], "~", this.line));
+          break;
+        }
+        case "=": {
+          this.tokens.push(new Token(Tokens["Equal"], "=", this.line));
           break;
         }
         default: {
