@@ -20,7 +20,7 @@ export class CodeGen {
       });
       list.push(`}`);
     } else if (node.type === Types["Text"]) {
-      list.push(`return text("${node.content}");`);
+      list.push(`return text(\`${node.content}\`);`);
     } else if (node.type === Types["Choice"]) {
       let choiceList = [];
       node.body.forEach((child) => {
