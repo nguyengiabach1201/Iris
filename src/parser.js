@@ -164,8 +164,9 @@ export class Parser {
   }
 
   varStatement(token) {
-    let name = this.peek().split("=")[0].trim();
-    let value = this.peek().split("=")[1].trim();
+    console.log(this.peek());
+    let name = this.peek().content.split("=")[0].trim();
+    let value = this.peek().content.split("=")[1].trim();
 
     function isValidVarName(name) {
       if (!name || typeof name !== "string") return false;
