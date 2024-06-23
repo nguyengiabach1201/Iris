@@ -33,6 +33,10 @@ export class CodeGen {
       list.push(
         `if(${node.section}){return diversion(${node.section});}else{console.error('Error: Section ${node.section} is undefined')}`,
       );
+    } else if (node.type === Types["Var"]) {
+      list.push(
+        `try{${node.name} = ${node.value}}catch{'Error: Struggling with variable ${node.name}'}`,
+      );
     }
   }
 
