@@ -3,6 +3,7 @@ export const Tokens = {
   Choice: "Choice",
   Section: "Section",
   Diversion: "Diversion",
+  Var: "Var",
   Eol: "Eol",
   Eof: "Eof",
 };
@@ -71,6 +72,10 @@ export class Lexer {
         }
         case ">": {
           this.tokens.push(new Token(Tokens["Diversion"], ">", this.line));
+          break;
+        }
+        case "~": {
+          this.tokens.push(new Token(Tokens["Var"], "~", this.line));
           break;
         }
         default: {
