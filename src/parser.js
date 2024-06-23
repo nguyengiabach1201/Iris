@@ -131,7 +131,18 @@ export class Parser {
       } else this.advance();
     }
 
-    return new Section(name, body);
+    function isValidSectionName(name) {
+      if (!name || typeof name !== "string") return false;
+
+      const firstCharRegex = /^[a-zA-Z_$]/;
+      if (!firstCharRegex.test(name[0])) return false;
+
+      const allowedCharsRegex = /^[a-zA-Z0-9_$]*$/;
+      return allowedCharsRegex.test(name);
+    }
+
+    if (isValidSectionName(name)) return new Section(name, body);
+    else this.error(`Invalid section name'`, token.line);
   }
 
   diversionStatement(token) {
