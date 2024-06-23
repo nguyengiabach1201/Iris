@@ -5,18 +5,19 @@ export const Types = {
   Section: "Section",
   Choice: "Choice",
   Diversion: "Diversion",
+  Var: "Var",
 };
 
 export class Text {
   constructor(content) {
-    this.type = Tokens["Text"];
+    this.type = Types["Text"];
     this.content = content;
   }
 }
 
 export class Choice {
   constructor(content, body) {
-    this.type = Tokens["Choice"];
+    this.type = Types["Choice"];
     this.content = content;
     this.body = body;
   }
@@ -24,7 +25,7 @@ export class Choice {
 
 export class Section {
   constructor(name, body) {
-    this.type = Tokens["Section"];
+    this.type = Types["Section"];
     this.name = name;
     this.body = body;
   }
@@ -32,8 +33,16 @@ export class Section {
 
 export class Diversion {
   constructor(section) {
-    this.type = Tokens["Diversion"];
+    this.type = Types["Diversion"];
     this.section = section;
+  }
+}
+
+export class Var {
+  constructor(name, value) {
+    this.type = Types["Var"];
+    this.name = name;
+    this.value = value;
   }
 }
 
@@ -142,7 +151,7 @@ export class Parser {
     }
 
     if (isValidSectionName(name)) return new Section(name, body);
-    else this.error(`Invalid section name'`, token.line);
+    else this.error(`Invalid section name`, token.line);
   }
 
   diversionStatement(token) {
