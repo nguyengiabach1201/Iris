@@ -164,7 +164,21 @@ export class Parser {
   }
 
   varStatement(token) {
-    return new Var();
+    let name = this.peek().split("=")[0].trim();
+    let value = this.peek().split("=")[1].trim();
+
+    function isValidVarName(name) {
+      if (!name || typeof name !== "string") return false;
+
+      const firstCharRegex = /^[a-zA-Z_$]/;
+      if (!firstCharRegex.test(name[0])) return false;
+
+      const allowedCharsRegex = /^[a-zA-Z0-9_$]*$/;
+      return allowedCharsRegex.test(name);
+    }
+
+    if (isValidVarName(name)) return new Var(name, value);
+    else this.error(`Invalid variable name`, token.line);
   }
 
   parse() {
