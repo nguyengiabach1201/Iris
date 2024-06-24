@@ -1,6 +1,6 @@
 const container = document.getElementById("container");
 
-function text(content, color) {
+function text(content, func, color) {
     const p = document.createElement("p");
     if (color) p.style.color = color;
     container.appendChild(p);
@@ -35,6 +35,7 @@ function text(content, color) {
             }
             else {
                 destination.innerHTML = displayedText + textArray[currentArrayIndex - 1].substring(0, currentTextLength);
+                if (typeof func === "function") func();
             }
         } else {
             setTimeout(typing, typingSpeed);
@@ -65,10 +66,13 @@ function end() {
     throw "Thanks for playing!!!";
 }
 
-function execute(index, ast=ast) {
+function execute(index, ast = ast) {
     switch (ast[index].type) {
         case "Var":
             eval(ast[index].name + "=" + ast[index].value);
+            break;
+        case "Text":
+            text(ast[index].content, () => { execute(ast[index + 1]) });
             break;
     }
 }
