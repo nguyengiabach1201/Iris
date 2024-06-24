@@ -18,14 +18,13 @@ export class CodeGen {
       });
       list.push(`}`);
     } else if (node.type === Types["Text"]) {
-      list.push(`return text(\`${node.content}\`);`);
+      list.push(`text(\`${node.content}\`);`);
     } else if (node.type === Types["Choice"]) {
       let choiceList = [];
       node.body.forEach((child) => {
         this.push(child, choiceList);
       });
       node.body = choiceList;
-      this.analise(node.body);
       list.push(`choice(\`${node.content}\`,()=>{${node.body}});`);
     } else if (node.type === Types["Diversion"]) {
       list.push(
@@ -44,41 +43,10 @@ export class CodeGen {
     }
   }
 
-  analise(list) {
-    for (let i = list.length - 1; i >= 0; i -= 1) {
-      if (
-        list[i - 1] &&
-        list[i - 1].startsWith("choice") &&
-        list[i].startsWith("choice")
-      ) {
-        list[i - 1] =
-          list[i - 1].substr(0, list[i - 1].length - 2) +
-          `,()=>{${list[i]}}` +
-          list[i - 1].substr(list[i - 1].length - 2);
-        list[i] = "";
-      }
-
-      if (
-        list[i - 1] &&
-        list[i - 1].startsWith("return text") &&
-        list[i] != "}" &&
-        !list[i].startsWith("function")
-      ) {
-        list[i - 1] =
-          list[i - 1].substr(0, list[i - 1].length - 2) +
-          `,()=>{${list[i]}}` +
-          list[i - 1].substr(list[i - 1].length - 2);
-        list[i] = "";
-      }
-    }
-  }
-
   generate() {
     this.ast.forEach((node) => {
       this.push(node, this.jsList);
     });
-
-    this.analise(this.jsList);
 
     this.js += "(()=>{";
 
