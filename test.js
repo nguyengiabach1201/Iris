@@ -34,8 +34,6 @@ window.writingControl = () => {
                 destination.innerHTML = displayedText + textArray[currentArrayIndex - 1].substring(0, currentTextLength);
                 finished = true;
                 window.writingList.shift();
-                container.appendChild(p);
-                console.log("!")
             }
         } else {
             setTimeout(()=>{typing(p)}, typingSpeed);
@@ -50,6 +48,7 @@ window.writingControl = () => {
 
                 if (window.writingList[0].type === "text") {
                     const p = document.createElement("p");
+                    container.appendChild(p);
 
                     textArray = [window.writingList[0].content];
                     displayedText = '', currentCharIndex = 0, currentArrayIndex = 0, currentTextLength = textArray[0].length;
@@ -57,8 +56,8 @@ window.writingControl = () => {
                     typing(p);
                 }
                 if (window.writingList[0].type === "choice") {
-                    window.writingList.shift();
                     container.appendChild(window.writingList[0].button);
+                    window.writingList.shift();
                     finished = true;
                 }
             }
