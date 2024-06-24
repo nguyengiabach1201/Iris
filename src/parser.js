@@ -204,7 +204,6 @@ export class Parser {
 
   ifStatement(token) {
     let condition = this.peek().content;
-    console.log(condition);
     this.advance();
 
     let body = [];
