@@ -15,7 +15,7 @@ Hello, welcome to Iris
 ```
 This will output the content.
 
-Texts on adjacent lines will be counted as one, e.g:
+Texts on adjacent lines will be counted as one:
 ```
 Iris
 is awesome
@@ -25,7 +25,7 @@ It is the same as:
 Iris is awesome
 ```
 
-To have a break between your paragraphs, just simply have a break line between them:
+To have a break between your paragraphs, just have a break line between them:
 ```
 This is the first paragraph!
 
@@ -83,7 +83,18 @@ Not thing happens
 
 ### Advanced syntax
 **1. Variables**
+To declare a variable, you would use `~` (tilde sign), then the variable name, `=` (equal sign), and lastly the variable's value.
 
+For example:
+```
+~ date = "1/1/2000"
+```
+
+You can also intergrate Javascript within it:
+```
+~ sin = Math.sin
+~ a = sin(10)
+```
 
 **2. If statements**
 
