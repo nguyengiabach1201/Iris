@@ -62,7 +62,7 @@ window.writingControl = () => {
                 }
             }
             loop();
-        });
+        }, 0);
     }
     loop();
 }
