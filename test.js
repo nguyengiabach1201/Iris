@@ -67,23 +67,26 @@ window.end = () => {
 }
 
 window.execute = (index, ast = ast) => {
-    switch (ast[index].type) {
-        case "Var":
-            eval(ast[index].name + "=" + ast[index].value);
-            break;
-        case "Text":
-            window.text(ast[index].content, () => { window.execute(ast[index + 1]) });
-            break;
-        case "Diversion":
+    if (ast[index].type)
+        switch (ast[index].type) {
+            case "Var":
+                eval(ast[index].name + "=" + ast[index].value);
+                window.execute(ast[index + 1]);
+                break;
+            case "Text":
+                window.text(ast[index].content, () => { window.execute(ast[index + 1]) });
+                break;
+            case "Diversion":
 
-            break;
-        case "Section":
-            eval("function name(){const localAst=" + JSON.stringify(window.ast[index].body, null, 0) + ";window.execute(0,localAst);}");
-            break;
-        case "Choice":
+                break;
+            case "Section":
+                eval("function name(){const localAst=" + JSON.stringify(window.ast[index].body, null, 0) + ";window.execute(0,localAst);}");
+                break;
+            case "Choice":
 
-            break;
-    }
+                break;
+        }
+    else { }
 }
 
 window.execute(0, ast);
