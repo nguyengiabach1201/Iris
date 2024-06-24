@@ -1,8 +1,13 @@
 window.container = document.getElementById("container");
 window.writingList = [];
 
+window.writingControl = () => {
+    
+}
+
 window.text = (content) => {
-    const p = document.createElement("p");
+    // const p = document.createElement("p");
+    writingList.push({type: "text", content: content});
     // p.innerHTML = content;
     // container.appendChild(p);
 }
