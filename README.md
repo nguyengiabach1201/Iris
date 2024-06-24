@@ -63,8 +63,6 @@ You are on the street, you really want to go home
 ...
 ```
 
-***Notes:*** When you name a section, don't use space or any special characters, otherwise the game will cause errors!!!
-
 **4. Choices**
 
 A choice is indicated by a `+` (plus sign). The choice will flow into the next instruction when you have chosen.
@@ -100,8 +98,6 @@ Variables can also be displayed within paragraphs choices, within this syntax:
 You are a ${role}!!!
 ```
 
-***Notes:*** When you name a variable, don't use space or any special characters, otherwise the game will cause errors!!!
-
 **2. If statements**
 Iris supports various features, including if statements. If statements, which are like variables, can be integrated with Javascript!
 
@@ -125,6 +121,22 @@ You are rich! }
 ? money > 100 {
 You are rich!
 }
+```
+
+### Notes
+***Notes:*** When you name a section, don't use space or any special characters, otherwise the game will cause errors!!!
+***Notes:*** When you name a variable, don't use space or any special characters, otherwise the game will cause errors!!!
+
+***Notes:*** If you enter a section or an if statement, you can't return to that scope to continue that part of the code below! So, remember to use a diversion!
+
+```
+Hello
+> Greeting
+
+OK!!! # This will be ignored
+
+- Greeting
+Hi
 ```
 
 ### Build
