@@ -235,7 +235,10 @@ export class Parser {
   }
 
   parse() {
-    while (this.peek().type !== Tokens["Eof"]) {
+    while (
+      this.peek().type !== Tokens["Eof"] &&
+      this.peek().type !== undefined
+    ) {
       let token = this.advance();
 
       switch (token.type) {
@@ -262,15 +265,6 @@ export class Parser {
         case Tokens["If"]: {
           this.ast.push(this.ifStatement(token));
           break;
-        }
-        case Tokens["Eol"]: {
-          break;
-        }
-        case Tokens["Eof"]: {
-          break;
-        }
-        default: {
-          this.error(`Unexpected token '${token.type}'`, token.line);
         }
       }
     }
