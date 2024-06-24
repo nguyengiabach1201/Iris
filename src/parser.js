@@ -177,6 +177,8 @@ export class Parser {
   }
 
   varStatement(token) {
+    if (this..content.split("=").length !== 2) this.error();
+    
     let name = this.peek().content.split("=")[0].trim();
     let value = this.peek().content.split("=")[1].trim();
     this.advance();
