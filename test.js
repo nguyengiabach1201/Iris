@@ -33,7 +33,7 @@ window.writingControl = () => {
             else {
                 destination.innerHTML = displayedText + textArray[currentArrayIndex - 1].substring(0, currentTextLength);
                 finished = true;
-                window.writingList.pop(0);
+                window.writingList.shift();
                 container.appendChild(p);
             }
         } else {
@@ -46,9 +46,17 @@ window.writingControl = () => {
         setTimeout(function () {
             if (finished && window.writingList[0]) {
                 finished = false;
-                const p = document.createElement("p");
-                textArray = [window.writingList[0]];
-                typing(p);
+
+                if (window.writingList[0].type === "text") {
+                    const p = document.createElement("p");
+                    textArray = [window.writingList[0].content];
+                    typing(p);
+                }
+                if (window.writingList[0].type === "choice") {
+                    window.writingList.shift();
+                    container.appendChild(window.writingList[0].button);
+                    finished = true;
+                }
             }
             loop();
         });
@@ -70,13 +78,11 @@ window.choice = (content, body) => {
         Array.prototype.slice.call(container.getElementsByTagName("button"), 0).forEach(element => {
             element.remove();
         });
-        const p = document.createElement("p");
-        p.innerHTML = button.innerHTML;
-        p.class = "answered";
-
+        window.text(content);
         body();
     };
-    container.appendChild(button);
+    writingList.push({ type: "choice", button: button });
+    // container.appendChild(button);
 }
 
 window.diversion = (section) => {
