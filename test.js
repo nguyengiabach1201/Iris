@@ -15,8 +15,6 @@ window.writingControl = () => {
     var currentLine;
 
     function typing(p) {
-        console.log("!");
-
         displayedText = ' ';
         currentLine = Math.max(0, currentArrayIndex - scrollStartLine);
         var destination = p;
@@ -30,7 +28,7 @@ window.writingControl = () => {
             currentArrayIndex++;
             if (currentArrayIndex != textArray.length) {
                 currentTextLength = textArray[currentArrayIndex].length;
-                setTimeout(()=>{typing(p)}, 500);
+                setTimeout(() => { typing(p) }, 500);
             }
             else {
                 destination.innerHTML = displayedText + textArray[currentArrayIndex - 1].substring(0, currentTextLength);
@@ -38,7 +36,7 @@ window.writingControl = () => {
                 window.writingList.shift();
             }
         } else {
-            setTimeout(()=>{typing(p)}, typingSpeed);
+            setTimeout(() => { typing(p) }, typingSpeed);
         }
     }
 
@@ -50,7 +48,13 @@ window.writingControl = () => {
 
                 if (window.writingList[0].type === "text") {
                     const p = document.createElement("p");
-                    container.appendChild(p);
+                    if (window.writingList[0].color) {
+                        p.style.color = window.writingList[0].color;
+                        container.appendChild(document.createElement("br"));
+                        container.appendChild(p);
+                        container.appendChild(document.createElement("br"));
+                    }
+                    else container.appendChild(p);
 
                     textArray = [window.writingList[0].content];
                     displayedText = '', currentCharIndex = 0, currentArrayIndex = 0, currentTextLength = textArray[0].length;
@@ -69,9 +73,9 @@ window.writingControl = () => {
     loop();
 }
 
-window.text = (content) => {
+window.text = (content, color) => {
     // const p = document.createElement("p");
-    writingList.push({ type: "text", content: content });
+    writingList.push({ type: "text", content: content, color: color });
     // p.innerHTML = content;
     // container.appendChild(p);
 }
@@ -83,8 +87,7 @@ window.choice = (content, body) => {
         Array.prototype.slice.call(container.getElementsByTagName("button"), 0).forEach(element => {
             element.remove();
         });
-        window.text(content);
-        container.getElementsByTagName("p")[container.getElementsByTagName("p").length-1].style.color = "gray";
+        window.text(content, "gray");
         body();
     };
     writingList.push({ type: "choice", button: button });
