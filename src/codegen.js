@@ -28,7 +28,7 @@ export class CodeGen {
       });
       node.body = choiceList;
       this.analise(node.body);
-      list.push(`choice("${node.content}",()=>{${node.body}});`);
+      list.push(`choice(\`${node.content}\`,()=>{${node.body}});`);
     } else if (node.type === Types["Diversion"]) {
       list.push(
         `if(${node.section}){return diversion(${node.section});}else{console.error('Error: Section ${node.section} is undefined')}`,
