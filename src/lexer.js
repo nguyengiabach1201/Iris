@@ -8,6 +8,8 @@ export const Tokens = {
   Equal: "Equal",
 
   If: "If",
+  LeftBracket: "LeftBracket",
+  RightBracket: "RightBracket",
 
   Eol: "Eol",
   Eof: "Eof",
@@ -89,6 +91,14 @@ export class Lexer {
         }
         case "?": {
           this.tokens.push(new Token(Tokens["If"], "?", this.line));
+          break;
+        }
+        case "{": {
+          this.tokens.push(new Token(Tokens["LeftBracket"], "{", this.line));
+          break;
+        }
+        case "}": {
+          this.tokens.push(new Token(Tokens["RightBracket"], "}", this.line));
           break;
         }
         default: {
