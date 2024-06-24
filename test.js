@@ -1,6 +1,6 @@
-const container = document.getElementById("container");
+window.container = document.getElementById("container");
 
-function text(content, func, color) {
+window.text = (content, func, color) => {
     const p = document.createElement("p");
     if (color) p.style.color = color;
     container.appendChild(p);
@@ -44,7 +44,7 @@ function text(content, func, color) {
     typing();
 }
 
-function choice(content) {
+window.choice = (content) => {
     const button = document.createElement("button");
     button.innerHTML = content;
     button.onclick = () => {
@@ -57,12 +57,12 @@ function choice(content) {
     container.appendChild(button);
 }
 
-function diversion(section) {
+window.diversion = (section) => {
     if (section) section();
 }
 
-function end() {
-    text("--- The End ---");
+window.end = () => {
+    window.text("--- The End ---");
     throw "Thanks for playing!!!";
 }
 
@@ -72,7 +72,10 @@ function execute(index, ast = ast) {
             eval(ast[index].name + "=" + ast[index].value);
             break;
         case "Text":
-            text(ast[index].content, () => { execute(ast[index + 1]) });
+            window.text(ast[index].content, () => { window.execute(ast[index + 1]) });
+            break;
+        case "":
+
             break;
     }
 }
