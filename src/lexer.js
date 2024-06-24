@@ -9,6 +9,8 @@ export const Tokens = {
   Var: "Var",
   Equal: "Equal",
 
+  If: "If",
+
   Eol: "Eol",
   Eof: "Eof",
 };
@@ -85,6 +87,10 @@ export class Lexer {
         }
         case "=": {
           this.tokens.push(new Token(Tokens["Equal"], "=", this.line));
+          break;
+        }
+        case "?": {
+          this.tokens.push(new Token(Tokens["If"], "?", this.line));
           break;
         }
         default: {
