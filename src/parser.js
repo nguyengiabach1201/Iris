@@ -6,6 +6,7 @@ export const Types = {
   Choice: "Choice",
   Diversion: "Diversion",
   Var: "Var",
+  If: "If",
 };
 
 export class Text {
@@ -43,6 +44,14 @@ export class Var {
     this.type = Types["Var"];
     this.name = name;
     this.value = value;
+  }
+}
+
+export class If {
+  constructor(condition, body) {
+    this.type = Types["If"];
+    this.condition = condition;
+    this.body = body;
   }
 }
 
@@ -164,9 +173,9 @@ export class Parser {
   }
 
   varStatement(token) {
-    console.log(this.peek());
     let name = this.peek().content.split("=")[0].trim();
     let value = this.peek().content.split("=")[1].trim();
+    this.advance();
 
     function isValidVarName(name) {
       if (!name || typeof name !== "string") return false;
