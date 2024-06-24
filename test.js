@@ -77,16 +77,17 @@ window.execute = (index, ast = ast) => {
                 window.text(ast[index].content, () => { window.execute(ast[index + 1]) });
                 break;
             case "Diversion":
-
+                eval(window.ast[index].section+"()");
+                window.execute(ast[index + 1]);
                 break;
             case "Section":
                 eval("function" + window.ast[index].name + "(){const localAst=" + JSON.stringify(window.ast[index].body, null, 0) + ";window.execute(0,localAst);}");
+                window.execute(ast[index + 1]);
                 break;
             case "Choice":
 
                 break;
         }
-    else { }
 }
 
 window.execute(0, ast);
