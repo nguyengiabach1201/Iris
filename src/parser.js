@@ -123,6 +123,8 @@ export class Parser {
         body.push(this.diversionStatement(this.advance()));
       } else if (this.peek().type === Tokens["Var"]) {
         body.push(this.varStatement(this.advance()));
+      } else if (this.peek().type === Tokens["If"]) {
+        body.push(this.ifStatement(this.advance()));
       } else this.advance();
     }
 
@@ -150,6 +152,8 @@ export class Parser {
         body.push(this.diversionStatement(this.advance()));
       } else if (this.peek().type === Tokens["Var"]) {
         body.push(this.varStatement(this.advance()));
+      } else if (this.peek().type === Tokens["If"]) {
+        body.push(this.ifStatement(this.advance()));
       } else this.advance();
     }
 
@@ -200,6 +204,7 @@ export class Parser {
 
   ifStatement(token) {
     let condition = this.peek().content;
+    console.log(condition);
     this.advance();
 
     let body = [];
@@ -266,6 +271,7 @@ export class Parser {
           break;
         }
         case Tokens["If"]: {
+          console.log("!!!");
           this.ast.push(this.ifStatement(token));
           break;
         }
