@@ -74,8 +74,16 @@ window.execute = (index, ast = ast) => {
         case "Text":
             window.text(ast[index].content, () => { window.execute(ast[index + 1]) });
             break;
-        case "":
+        case "Diversion":
+
+            break;
+        case "Section":
+
+            break;
+        case "Choice":
 
             break;
     }
 }
+
+window.execute(0, ast);
