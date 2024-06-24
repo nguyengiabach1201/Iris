@@ -1,10 +1,8 @@
 # Iris
-A text-based adventure game engine
+A language specialized for making a text-based adventure game!!!
 
 ## How to use
-***Iris*** has its own markup language, called ***Iris-script***.
-
-***Iris-script*** is incredibly easy to learn, within ***a few minutes***, you will able to make a text-based game ***yourself***!
+***Iris*** is incredibly easy to learn, within ***a few minutes***, you will able to make a text-based game ***yourself***!
 
 ### Basic syntax
 **1. Paragraphs**
@@ -135,9 +133,6 @@ node ./src/iris.js <your file(s) here>
 It will create a new HTML file(s), open it up, and let's try out your new text-based game! 
 
 🎉🎉🥳 Taddaaa!!! And you have learned how to make a game with Iris!!! 🎊🎊👏
-
-## TODO
-- Add conditional contents
 
 ## Contact
 Feel free to fork this repository or open issues. For any further information, please contact [my email](mailto:nguyengiabach1201@gmail.com).
