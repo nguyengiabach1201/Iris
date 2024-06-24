@@ -121,6 +121,8 @@ export class Parser {
         body.push(this.choiceStatement(this.advance()));
       } else if (this.peek().type === Tokens["Diversion"]) {
         body.push(this.diversionStatement(this.advance()));
+      } else if (this.peek().type === Tokens["Var"]) {
+        body.push(this.varStatement(this.advance()));
       } else this.advance();
     }
 
@@ -146,6 +148,8 @@ export class Parser {
         body.push(this.choiceStatement(this.advance()));
       } else if (this.peek().type === Tokens["Diversion"]) {
         body.push(this.diversionStatement(this.advance()));
+      } else if (this.peek().type === Tokens["Var"]) {
+        body.push(this.varStatement(this.advance()));
       } else this.advance();
     }
 
@@ -191,6 +195,36 @@ export class Parser {
     else this.error(`Invalid variable name`, token.line);
   }
 
+  ifStatement(token) {
+    let condition = this.peek().content;
+    this.advance();
+
+    let body = [];
+
+    if (this.peek().type === Tokens["LeftBracket"]) {
+      while (this.peek().type !== Tokens["RightBracket"]) {
+        if (this.peek().type === Tokens["Section"]) {
+          this.error(`Missing close bracket for if statement`, token.line);
+          break;
+        }
+
+        if (this.peek().type === Tokens["Text"]) {
+          body.push(this.textStatement(this.advance(), false));
+        } else if (this.peek().type === Tokens["Choice"]) {
+          body.push(this.choiceStatement(this.advance()));
+        } else if (this.peek().type === Tokens["Diversion"]) {
+          body.push(this.diversionStatement(this.advance()));
+        } else if (this.peek().type === Tokens["Var"]) {
+          body.push(this.varStatement(this.advance()));
+        } else if (this.peek().type === Tokens["If"]) {
+          body.push(this.ifStatement(this.advance()));
+        } else this.advance();
+      }
+    } else this.error(`Missing open bracket for if statement`, token.line);
+
+    return new If(condition, body);
+  }
+
   parse() {
     while (this.peek().type !== Tokens["Eof"]) {
       let token = this.advance();
@@ -216,11 +250,18 @@ export class Parser {
           this.ast.push(this.varStatement(token));
           break;
         }
+        case Tokens["If"]: {
+          this.ast.push(this.ifStatement(token));
+          break;
+        }
         case Tokens["Eol"]: {
           break;
         }
         case Tokens["Eof"]: {
           break;
+        }
+        default: {
+          this.error(`Unexpected token '${token.type}'`, token.line);
         }
       }
     }
