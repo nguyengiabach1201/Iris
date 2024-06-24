@@ -82,6 +82,10 @@ Not thing happens
 ```
 
 ### Advanced syntax
+**1. Variables**
+
+
+**2. If statements**
 
 ### Build
 Run
