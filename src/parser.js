@@ -133,9 +133,9 @@ export class Parser {
     let name = "";
     let body = [];
 
-    if (this.peek().type === Tokens["Text"]) {
+    if (this.peek().type === Tokens["Text"])
       name = this.textStatement(this.advance(), true).content;
-    } else
+    else
       this.error(`Expected 'Text' but got '${this.peek().type}'`, token.line);
 
     while (
@@ -201,6 +201,10 @@ export class Parser {
 
     let body = [];
 
+    if (condition.trim()[condition.trim().length - 1] === "{") {
+    }
+    // console.log(condition.trim()[condition.trim().length-1]);
+
     if (this.peek().type === Tokens["LeftBracket"]) {
       while (this.peek().type !== Tokens["RightBracket"]) {
         if (this.peek().type === Tokens["Section"]) {
@@ -222,7 +226,7 @@ export class Parser {
       }
     } else this.error(`Missing open bracket for if statement`, token.line);
     this.advance();
-    
+
     return new If(condition, body);
   }
 
