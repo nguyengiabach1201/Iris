@@ -1,10 +1,5 @@
 const container = document.getElementById("container");
 
-function br() {
-    const br = document.createElement("br");
-    container.appendChild(br);
-}
-
 function text(content, color) {
     const p = document.createElement("p");
     if (color) p.style.color = color;
@@ -48,15 +43,15 @@ function text(content, color) {
     typing();
 }
 
-function choice(content, body, func) {
+function choice(content) {
     const button = document.createElement("button");
     button.innerHTML = content;
     button.onclick = () => {
         Array.prototype.slice.call(container.getElementsByTagName("button"), 0).forEach(element => {
             element.remove();
         });
-        br();
-        text(content, () => { br(); body(); }, "gray");
+        // br();
+        // text(content, () => { br(); body(); }, "gray");
     };
     container.appendChild(button);
 }
