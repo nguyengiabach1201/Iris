@@ -1,5 +1,3 @@
-import { equal } from "node:assert";
-
 export const Tokens = {
   Text: "Text",
   Choice: "Choice",
