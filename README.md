@@ -103,6 +103,29 @@ You are a ${role}!!!
 ```
 
 **2. If statements**
+Iris supports various features, including if statements. If statements, which are like variables, can be integrated with Javascript!
+
+To start writing an if statement, you start with a `?` (question mark) and then your condition.
+
+```
+~ money = 1000
+? money > 100 {
+You are rich!
+}
+```
+
+Also, remember to keep the close bracket in a new line, otherwise, it will cause an error!
+
+```
+# This will cause an error
+? money > 100 {
+You are rich! }
+
+# But his won't
+? money > 100 {
+You are rich!
+}
+```
 
 ### Build
 Run
