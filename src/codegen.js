@@ -121,6 +121,8 @@ export class Parser {
         body.push(this.choiceStatement(this.advance()));
       } else if (this.peek().type === Tokens["Diversion"]) {
         body.push(this.diversionStatement(this.advance()));
+      } else if (this.peek().type === Tokens["Var"]) {
+        body.push(this.varStatement(this.advance()));
       } else this.advance();
     }
 
@@ -146,6 +148,8 @@ export class Parser {
         body.push(this.choiceStatement(this.advance()));
       } else if (this.peek().type === Tokens["Diversion"]) {
         body.push(this.diversionStatement(this.advance()));
+      } else if (this.peek().type === Tokens["Var"]) {
+        body.push(this.varStatement(this.advance()));
       } else this.advance();
     }
 
@@ -203,6 +207,8 @@ export class Parser {
       body.push(this.choiceStatement(this.advance()));
     } else if (this.peek().type === Tokens["Diversion"]) {
       body.push(this.diversionStatement(this.advance()));
+    } else if (this.peek().type === Tokens["Var"]) {
+      body.push(this.varStatement(this.advance()));
     } else this.advance();
 
     return new If(condition, body);
