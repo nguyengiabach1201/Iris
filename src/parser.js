@@ -201,11 +201,12 @@ export class Parser {
 
     let body = [];
 
-    if (condition.trim()[condition.trim().length - 1] === "{") {
-    }
-    // console.log(condition.trim()[condition.trim().length-1]);
+    let hadLeftBracket = false;
+    hadLeftBracket = condition.trim()[condition.trim().length - 1] === "{";
 
-    if (this.peek().type === Tokens["LeftBracket"]) {
+    while (this.peek().type === Tokens["Eol"]) this.advance();
+
+    if (this.peek().type === Tokens["LeftBracket"] || hadLeftBracket) {
       while (this.peek().type !== Tokens["RightBracket"]) {
         if (
           this.peek().type === Tokens["Section"] ||
