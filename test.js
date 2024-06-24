@@ -77,7 +77,7 @@ window.execute = (index, ast = ast) => {
                 window.text(ast[index].content, () => { window.execute(ast[index + 1]) });
                 break;
             case "Diversion":
-                eval(window.ast[index].section+"()");
+                window.diversion(window.ast[index].section);
                 window.execute(ast[index + 1]);
                 break;
             case "Section":
