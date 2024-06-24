@@ -5,7 +5,7 @@ function br() {
     container.appendChild(br);
 }
 
-function text(content, func, color) {
+function text(content, color) {
     const p = document.createElement("p");
     if (color) p.style.color = color;
     container.appendChild(p);
@@ -40,8 +40,6 @@ function text(content, func, color) {
             }
             else {
                 destination.innerHTML = displayedText + textArray[currentArrayIndex - 1].substring(0, currentTextLength);
-                if (func) func();
-                return;
             }
         } else {
             setTimeout(typing, typingSpeed);
@@ -61,8 +59,6 @@ function choice(content, body, func) {
         text(content, () => { br(); body(); }, "gray");
     };
     container.appendChild(button);
-
-    if (func) func();
 }
 
 function diversion(section) {
@@ -73,3 +69,4 @@ function end() {
     text("--- The End ---");
     throw "Thanks for playing!!!";
 }
+
