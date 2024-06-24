@@ -6,7 +6,7 @@ A text-based adventure game engine
 
 ***Iris-script*** is incredibly easy to learn, within ***a few minutes***, you will able to make a text-based game ***yourself***!
 
-### Syntax
+### Basic syntax
 **1. Paragraphs**
 
 The most basic part of an ***Iris*** project is a paragraph.
@@ -20,7 +20,7 @@ Texts on adjacent lines will be counted as one, e.g:
 Iris
 is awesome
 ```
-Is the same as:
+It is the same as:
 ```
 Iris is awesome
 ```
@@ -45,7 +45,7 @@ A comment is ignored by ***Iris*** so it wouldn't be printed:
 
 Sections are the most important part of ***Iris***, for it is the structural unit of the game.
 
-A section starts with a `-` (minus sign), and within every section are normal paragraphs, comments, or choices.
+A section starts with a `-` (minus sign); normal paragraphs, comments, or choices are within every section.
 
 ```
 - Section_one
@@ -80,6 +80,8 @@ You blacked out
 Not thing happens
 > Survive
 ```
+
+### Advanced syntax
 
 ### Build
 Run
