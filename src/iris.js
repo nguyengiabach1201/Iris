@@ -18,6 +18,7 @@ export class Iris {
 
     const codegen = new CodeGen(parser.ast);
     if (!parser.errored) {
+      codegen.generate();
       try {
         fs.writeFileSync(`./${filename}.html`, codegen.html);
       } catch (err) {
