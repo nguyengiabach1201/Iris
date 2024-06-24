@@ -1,6 +1,20 @@
 const container = document.getElementById("container");
 
 function typeWriter(content, p, func) {
+    
+}
+
+function br() {
+    const br = document.createElement("br");
+    container.appendChild(br);
+}
+
+function text(content, func, color) {
+    const p = document.createElement("p");
+    if (color) p.style.color = color;
+    container.appendChild(p);
+
+    // Typewriting effect
     const textArray = [content];
 
     const typingSpeed = 50;
@@ -40,18 +54,6 @@ function typeWriter(content, p, func) {
     typing();
 }
 
-function br() {
-    const br = document.createElement("br");
-    container.appendChild(br);
-}
-
-function text(content, func, color) {
-    const p = document.createElement("p");
-    if (color) p.style.color = color;
-    container.appendChild(p);
-    typeWriter(content, p, func);
-}
-
 function choice(content, body, func) {
     const button = document.createElement("button");
     button.innerHTML = content;
@@ -75,3 +77,5 @@ function end() {
     text("--- The End ---");
     throw "Thanks for playing!!!";
 }
+
+text("1 2 3 4 5 6 7 8 9 10 Done!")
