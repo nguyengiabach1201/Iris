@@ -1,8 +1,7 @@
 window.container = document.getElementById("container");
 
-window.text = (content, func, color) => {
+window.text = (content, func) => {
     const p = document.createElement("p");
-    if (color) p.style.color = color;
     container.appendChild(p);
 
     // Typewriting effect
@@ -51,8 +50,12 @@ window.choice = (content) => {
         Array.prototype.slice.call(container.getElementsByTagName("button"), 0).forEach(element => {
             element.remove();
         });
-        // br();
-        // text(content, () => { br(); body(); }, "gray");
+        const p = document.createElement("p");
+        p.style.color = "gray";
+        p.style.marginTop = "10px";
+        p.style.marginBottom = "10px";
+        p.innerHTML = button.innerHTML;
+        window.container.appendChild(p);
     };
     container.appendChild(button);
 }
@@ -85,7 +88,7 @@ window.execute = (index, ast = ast) => {
                 window.execute(ast[index + 1]);
                 break;
             case "Choice":
-
+                window.choice(window.ast[index].content);
                 break;
         }
 }
