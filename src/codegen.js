@@ -28,7 +28,7 @@ export class CodeGen {
       list.push(`choice(\`${node.content}\`,()=>{${node.body}});`);
     } else if (node.type === Types["Diversion"]) {
       list.push(
-        `if(${node.section}){return diversion(${node.section});}else{console.error('Error: Section ${node.section} is undefined')}`,
+        `if(${node.section}){diversion(${node.section});}else{console.error('Error: Section ${node.section} is undefined')}`,
       );
     } else if (node.type === Types["Var"]) {
       list.push(
