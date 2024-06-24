@@ -15,6 +15,8 @@ window.writingControl = () => {
     var currentLine;
 
     function typing(p) {
+        console.log("!");
+        
         displayedText = ' ';
         currentLine = Math.max(0, currentArrayIndex - scrollStartLine);
         var destination = p;
