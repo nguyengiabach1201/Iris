@@ -68,29 +68,29 @@ window.end = () => {
     throw "Thanks for playing!!!";
 }
 
-window.execute = (index, ast = ast) => {
-    if (ast[index].type)
+window.execute = (index, ast) => {
+    if (ast[index])
         switch (ast[index].type) {
             case "Var":
                 eval(ast[index].name + "=" + ast[index].value);
-                window.execute(ast[index + 1]);
+                window.execute(index + 1, ast);
                 break;
             case "Text":
-                window.text(ast[index].content, () => { window.execute(ast[index + 1]) });
+                window.text(ast[index].content, () => { window.execute(index + 1, ast) });
                 break;
             case "Diversion":
                 window.diversion(window.ast[index].section);
-                window.execute(ast[index + 1]);
-                break;
-            case "Section":
-                eval("function" + window.ast[index].name + "(){const localAst=" + JSON.stringify(window.ast[index].body, null, 0) + ";window.execute(0,localAst);}");
-                window.execute(ast[index + 1]);
+                window.execute(index + 1, ast);
                 break;
             case "Choice":
                 window.choice(window.ast[index].content);
-                window.execute(ast[index + 1]);
+                window.execute(index + 1, ast);
                 break;
         }
 }
+
+window.ast.forEach(node => {
+    if (node.type = "Section") eval("function" + node.name + "(){const localAst=" + JSON.stringify(node.body, null, 0) + ";window.execute(0,localAst);}");
+})
 
 window.execute(0, ast);
