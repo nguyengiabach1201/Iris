@@ -16,7 +16,7 @@ window.writingControl = () => {
 
     function typing(p) {
         console.log("!");
-        
+
         displayedText = ' ';
         currentLine = Math.max(0, currentArrayIndex - scrollStartLine);
         var destination = p;
@@ -84,6 +84,7 @@ window.choice = (content, body) => {
             element.remove();
         });
         window.text(content);
+        container.getElementsByTagName("p")[container.getElementsByTagName("p").length-1].style.color = "gray";
         body();
     };
     writingList.push({ type: "choice", button: button });
