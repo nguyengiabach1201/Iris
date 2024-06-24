@@ -1,9 +1,10 @@
 window.container = document.getElementById("container");
+window.writingList = [];
 
 window.text = (content) => {
     const p = document.createElement("p");
-    p.innerHTML = content;
-    container.appendChild(p);
+    // p.innerHTML = content;
+    // container.appendChild(p);
 }
 
 window.choice = (content, body) => {
@@ -16,7 +17,8 @@ window.choice = (content, body) => {
         const p = document.createElement("p");
         p.innerHTML = button.innerHTML;
         p.class = "answered";
-        
+
+        body();
     };
     container.appendChild(button);
 }
