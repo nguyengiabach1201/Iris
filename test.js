@@ -41,7 +41,7 @@ window.writingControl = () => {
         }
     }
 
-    let finished = false;
+    let finished = true;
     function loop() {
         setTimeout(function () {
             if (finished && window.writingList[0]) {
@@ -49,7 +49,10 @@ window.writingControl = () => {
 
                 if (window.writingList[0].type === "text") {
                     const p = document.createElement("p");
+
                     textArray = [window.writingList[0].content];
+                    displayedText = '', currentCharIndex = 0, currentArrayIndex = 0, currentTextLength = textArray[0].length;
+
                     typing(p);
                 }
                 if (window.writingList[0].type === "choice") {
@@ -93,3 +96,4 @@ window.end = () => {
     window.text("--- The End ---");
     throw "Thanks for playing!!!";
 }
+window.writingControl();
