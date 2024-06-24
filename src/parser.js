@@ -207,7 +207,10 @@ export class Parser {
 
     if (this.peek().type === Tokens["LeftBracket"]) {
       while (this.peek().type !== Tokens["RightBracket"]) {
-        if (this.peek().type === Tokens["Section"]) {
+        if (
+          this.peek().type === Tokens["Section"] ||
+          this.peek().type === Tokens["Eof"]
+        ) {
           this.error(`Missing close bracket for if statement`, token.line);
           break;
         }
