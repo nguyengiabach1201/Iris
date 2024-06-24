@@ -1,89 +1,245 @@
-import { Types } from "./parser.js";
+import { Tokens } from "./lexer.js";
 
-export class CodeGen {
-  constructor(ast) {
-    this.ast = ast;
+export const Types = {
+  Text: "Text",
+  Section: "Section",
+  Choice: "Choice",
+  Diversion: "Diversion",
+  Var: "Var",
+  If: "If",
+};
 
-    this.css = `#container,#container>button,#container>button:hover{font-family:"Special Elite",system-ui}body{width:100vw;height:100vh;overflow-x:hidden;margin:5rem 10rem}#container{width:calc(100vw - 20rem);font-size:20px}#container>*{margin-top:0;margin-bottom:7px}#container>button{width:100%;border:none;background:0 0;color:#414141;font-size:15px;animation:.6s cubic-bezier(.38,.97,.56,.76) .1s forwards show;opacity:0;transform:rotateX(-90deg);transform-origin:top center}#container>button:hover{color:#4b4b4b;font-size:18px}@keyframes show{100%{opacity:1;transform:none}}`;
-    this.js = `const container=document.getElementById("container");function typeWriter(e,n,t){let r=[e];var i,o=0,c=r[0].length,l=0,a="";!function e(){a=" ",i=Math.max(0,o-20);for(var f=n;i<o;)a+=r[i++]+"<br />";if(f.innerHTML=a+r[o].substring(0,l)+"_",l++==c){if(l=0,++o!=r.length)c=r[o].length,setTimeout(e,500);else{f.innerHTML=a+r[o-1].substring(0,c),t&&t();return}}else setTimeout(e,50)}()}function br(){let e=document.createElement("br");container.appendChild(e)}function text(e,n,t){let r=document.createElement("p");t&&(r.style.color=t),container.appendChild(r),typeWriter(e,r,n)}function choice(e,n,t){let r=document.createElement("button");r.innerHTML=e,r.onclick=()=>{Array.prototype.slice.call(container.getElementsByTagName("button"),0).forEach(e=>{e.remove()}),br(),text(e,()=>{br(),n()},"gray")},container.appendChild(r),t&&t()}function diversion(e){e&&e()}function end(){throw text("--- The End ---"),"Thanks for playing!!!"}`;
+export class Text {
+  constructor(content) {
+    this.type = Types["Text"];
+    this.content = content;
+  }
+}
 
-    this.jsList = [];
+export class Choice {
+  constructor(content, body) {
+    this.type = Types["Choice"];
+    this.content = content;
+    this.body = body;
+  }
+}
 
+export class Section {
+  constructor(name, body) {
+    this.type = Types["Section"];
+    this.name = name;
+    this.body = body;
+  }
+}
+
+export class Diversion {
+  constructor(section) {
+    this.type = Types["Diversion"];
+    this.section = section;
+  }
+}
+
+export class Var {
+  constructor(name, value) {
+    this.type = Types["Var"];
+    this.name = name;
+    this.value = value;
+  }
+}
+
+export class If {
+  constructor(condition, body) {
+    this.type = Types["If"];
+    this.condition = condition;
+    this.body = body;
+  }
+}
+
+export class Parser {
+  constructor(tokens) {
+    this.tokens = tokens;
+    this.ast = [];
     this.current = 0;
+
+    this.errored = false;
   }
 
-  push(node, list) {
-    if (node.type === Types["Section"]) {
-      list.push(`function ${node.name}(){`);
-      node.body.forEach((child) => {
-        this.push(child, list);
-      });
-      list.push(`}`);
-    } else if (node.type === Types["Text"]) {
-      list.push(`return text(\`${node.content}\`);`);
-    } else if (node.type === Types["Choice"]) {
-      let choiceList = [];
-      node.body.forEach((child) => {
-        this.push(child, choiceList);
-      });
-      node.body = choiceList;
-      this.analise(node.body);
-      list.push(`choice("${node.content}",()=>{${node.body}});`);
-    } else if (node.type === Types["Diversion"]) {
-      list.push(
-        `if(${node.section}){return diversion(${node.section});}else{console.error('Error: Section ${node.section} is undefined')}`,
-      );
-    } else if (node.type === Types["Var"]) {
-      list.push(
-        `try{${node.name} = ${node.value}}catch{'Error: Struggling with variable ${node.name}'}`,
-      );
-    }
+  error(msg, line) {
+    console.error(`Error: ${msg} at the starting of line ${line}.\n`);
+    this.errored = true;
   }
 
-  analise(list) {
-    for (let i = list.length - 1; i >= 0; i -= 1) {
-      if (
-        list[i - 1] &&
-        list[i - 1].startsWith("choice") &&
-        list[i].startsWith("choice")
-      ) {
-        list[i - 1] =
-          list[i - 1].substr(0, list[i - 1].length - 2) +
-          `,()=>{${list[i]}}` +
-          list[i - 1].substr(list[i - 1].length - 2);
-        list[i] = "";
-      }
+  peek() {
+    if (this.current >= this.tokens.length) return "\0";
+    return this.tokens[this.current];
+  }
 
-      if (
-        list[i - 1] &&
-        list[i - 1].startsWith("return text") &&
-        list[i] != "}" &&
-        !list[i].startsWith("function")
-      ) {
-        list[i - 1] =
-          list[i - 1].substr(0, list[i - 1].length - 2) +
-          `,()=>{${list[i]}}` +
-          list[i - 1].substr(list[i - 1].length - 2);
-        list[i] = "";
+  advance() {
+    if (this.current >= this.tokens.length) return "\0";
+    return this.tokens[this.current++];
+  }
+
+  textStatement(token, inline) {
+    let content = token.content;
+
+    let line = token.line;
+    while (this.peek().type === Tokens["Eol"] && !inline) {
+      if (this.current < this.tokens.length) {
+        this.advance();
+        if (this.tokens[this.current].type === Tokens["Text"]) {
+          if (this.tokens[this.current].line - line <= 1) {
+            content += " " + this.tokens[this.current].content;
+            line = this.tokens[this.current].line;
+            this.advance();
+          } else {
+            break;
+          }
+        }
       }
     }
+
+    return new Text(content);
   }
 
-  generate() {
-    this.ast.forEach((node) => {
-      this.push(node, this.jsList);
-    });
+  choiceStatement(token) {
+    let content = "";
+    let body = [];
 
-    this.analise(this.jsList);
+    if (this.peek().type === Tokens["Text"]) {
+      content = this.textStatement(this.advance(), true).content;
+    } else
+      this.error(`Expected 'Text' but got '${this.peek().type}'`, token.line);
 
-    this.js += "(()=>{";
+    while (
+      this.peek().type !== Tokens["Eof"] &&
+      this.peek().type !== Tokens["Section"] &&
+      this.peek().type !== Tokens["Choice"]
+    ) {
+      if (this.peek().type === Tokens["Text"]) {
+        body.push(this.textStatement(this.advance(), false));
+      } else if (this.peek().type === Tokens["Choice"]) {
+        body.push(this.choiceStatement(this.advance()));
+      } else if (this.peek().type === Tokens["Diversion"]) {
+        body.push(this.diversionStatement(this.advance()));
+      } else this.advance();
+    }
 
-    this.jsList.forEach((node) => {
-      this.js += node;
-    });
+    return new Choice(content, body);
+  }
 
-    this.js += "})()";
+  sectionStatement(token) {
+    let name = "";
+    let body = [];
 
-    this.html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Iris</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet"><style>${this.css}</style></head><body><div id="container"></div><script>${this.js}</script></body></html>`;
+    if (this.peek().type === Tokens["Text"]) {
+      name = this.textStatement(this.advance(), true).content;
+    } else
+      this.error(`Expected 'Text' but got '${this.peek().type}'`, token.line);
+
+    while (
+      this.peek().type !== Tokens["Eof"] &&
+      this.peek().type !== Tokens["Section"]
+    ) {
+      if (this.peek().type === Tokens["Text"]) {
+        body.push(this.textStatement(this.advance(), false));
+      } else if (this.peek().type === Tokens["Choice"]) {
+        body.push(this.choiceStatement(this.advance()));
+      } else if (this.peek().type === Tokens["Diversion"]) {
+        body.push(this.diversionStatement(this.advance()));
+      } else this.advance();
+    }
+
+    function isValidSectionName(name) {
+      if (!name || typeof name !== "string") return false;
+
+      const firstCharRegex = /^[a-zA-Z_$]/;
+      if (!firstCharRegex.test(name[0])) return false;
+
+      const allowedCharsRegex = /^[a-zA-Z0-9_$]*$/;
+      return allowedCharsRegex.test(name);
+    }
+
+    if (isValidSectionName(name)) return new Section(name, body);
+    else this.error(`Invalid section name`, token.line);
+  }
+
+  diversionStatement(token) {
+    if (this.peek().type === Tokens["Text"]) {
+      return new Diversion(this.textStatement(this.advance(), true).content);
+    } else
+      this.error(`Expected 'Text' but got '${this.peek().type}'`, token.line);
+
+    return new Diversion("");
+  }
+
+  varStatement(token) {
+    let name = this.peek().content.split("=")[0].trim();
+    let value = this.peek().content.split("=")[1].trim();
+    this.advance();
+
+    function isValidVarName(name) {
+      if (!name || typeof name !== "string") return false;
+
+      const firstCharRegex = /^[a-zA-Z_$]/;
+      if (!firstCharRegex.test(name[0])) return false;
+
+      const allowedCharsRegex = /^[a-zA-Z0-9_$]*$/;
+      return allowedCharsRegex.test(name);
+    }
+
+    if (isValidVarName(name)) return new Var(name, value);
+    else this.error(`Invalid variable name`, token.line);
+  }
+
+  ifStatement(token) {
+    let condition = this.peek().content;
+    this.advance();
+
+    let body = [];
+
+    if (this.peek().type === Tokens["Text"]) {
+      body.push(this.textStatement(this.advance(), false));
+    } else if (this.peek().type === Tokens["Choice"]) {
+      body.push(this.choiceStatement(this.advance()));
+    } else if (this.peek().type === Tokens["Diversion"]) {
+      body.push(this.diversionStatement(this.advance()));
+    } else this.advance();
+
+    return new If(condition, body);
+  }
+
+  parse() {
+    while (this.peek().type !== Tokens["Eof"]) {
+      let token = this.advance();
+
+      switch (token.type) {
+        case Tokens["Text"]: {
+          this.ast.push(this.textStatement(token, false));
+          break;
+        }
+        case Tokens["Choice"]: {
+          this.ast.push(this.choiceStatement(token));
+          break;
+        }
+        case Tokens["Section"]: {
+          this.ast.push(this.sectionStatement(token));
+          break;
+        }
+        case Tokens["Diversion"]: {
+          this.ast.push(this.diversionStatement(token));
+          break;
+        }
+        case Tokens["Var"]: {
+          this.ast.push(this.varStatement(token));
+          break;
+        }
+        case Tokens["Eol"]: {
+          break;
+        }
+        case Tokens["Eof"]: {
+          break;
+        }
+      }
+    }
   }
 }
