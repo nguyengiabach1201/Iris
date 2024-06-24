@@ -28,16 +28,17 @@ window.writingControl = () => {
             currentArrayIndex++;
             if (currentArrayIndex != textArray.length) {
                 currentTextLength = textArray[currentArrayIndex].length;
-                setTimeout(typing, 500);
+                setTimeout(()=>{typing(p)}, 500);
             }
             else {
                 destination.innerHTML = displayedText + textArray[currentArrayIndex - 1].substring(0, currentTextLength);
                 finished = true;
                 window.writingList.shift();
                 container.appendChild(p);
+                console.log("!")
             }
         } else {
-            setTimeout(typing, typingSpeed);
+            setTimeout(()=>{typing(p)}, typingSpeed);
         }
     }
 
@@ -90,6 +91,7 @@ window.choice = (content, body) => {
 
 window.diversion = (section) => {
     if (section) section();
+    else throw "Error: Section" + section + "is undefined";
 }
 
 window.end = () => {
