@@ -127,18 +127,6 @@ You are rich!
 ***Notes:*** When you name a section, don't use space or any special characters, otherwise the game will cause errors!!!
 ***Notes:*** When you name a variable, don't use space or any special characters, otherwise the game will cause errors!!!
 
-***Notes:*** If you enter a section or an if statement, you can't return to that scope to continue that part of the code below! So, remember to use a diversion!
-
-```
-Hello
-> Greeting
-
-OK!!! # This will be ignored
-
-- Greeting
-Hi
-```
-
 ### Build
 Run
 ```
