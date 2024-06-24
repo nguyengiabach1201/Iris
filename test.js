@@ -1,9 +1,5 @@
 const container = document.getElementById("container");
 
-function typeWriter(content, p, func) {
-    
-}
-
 function br() {
     const br = document.createElement("br");
     container.appendChild(br);
@@ -77,5 +73,3 @@ function end() {
     text("--- The End ---");
     throw "Thanks for playing!!!";
 }
-
-text("1 2 3 4 5 6 7 8 9 10 Done!")
