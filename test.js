@@ -66,7 +66,7 @@ window.end = () => {
     throw "Thanks for playing!!!";
 }
 
-function execute(index, ast = ast) {
+window.execute = (index, ast = ast) => {
     switch (ast[index].type) {
         case "Var":
             eval(ast[index].name + "=" + ast[index].value);
