@@ -100,6 +100,8 @@ Variables can also be displayed within paragraphs choices, within this syntax:
 You are a ${role}!!!
 ```
 
+***Notes:*** When you name a variable, don't use space or any special characters, otherwise the game will cause errors!!!
+
 **2. If statements**
 Iris supports various features, including if statements. If statements, which are like variables, can be integrated with Javascript!
 
