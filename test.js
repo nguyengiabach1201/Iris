@@ -43,7 +43,7 @@ window.text = (content, func) => {
     typing();
 }
 
-window.choice = (content) => {
+window.choice = (content, body) => {
     const button = document.createElement("button");
     button.innerHTML = content;
     button.onclick = () => {
@@ -51,11 +51,10 @@ window.choice = (content) => {
             element.remove();
         });
         const p = document.createElement("p");
-        p.style.color = "gray";
-        p.style.marginTop = "10px";
-        p.style.marginBottom = "10px";
         p.innerHTML = button.innerHTML;
+        p.class = "answered";
         window.container.appendChild(p);
+        window.execute(0, body);
     };
     container.appendChild(button);
 }
@@ -89,6 +88,7 @@ window.execute = (index, ast = ast) => {
                 break;
             case "Choice":
                 window.choice(window.ast[index].content);
+                window.execute(ast[index + 1]);
                 break;
         }
 }
