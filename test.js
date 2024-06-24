@@ -78,7 +78,7 @@ window.execute = (index, ast = ast) => {
 
             break;
         case "Section":
-
+            eval("function name(){const localAst=" + JSON.stringify(window.ast[index].body, null, 0) + ";window.execute(0,localAst);}");
             break;
         case "Choice":
 
