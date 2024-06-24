@@ -221,7 +221,8 @@ export class Parser {
         } else this.advance();
       }
     } else this.error(`Missing open bracket for if statement`, token.line);
-
+    this.advance();
+    
     return new If(condition, body);
   }
 
