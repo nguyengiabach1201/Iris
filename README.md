@@ -90,10 +90,16 @@ For example:
 ~ date = "1/1/2000"
 ```
 
-You can also intergrate Javascript within it:
+You can also integrate Javascript within it:
 ```
 ~ sin = Math.sin
 ~ a = sin(10)
+```
+
+Variables can also be displayed within paragraphs choices, within this syntax:
+```
+~ role = "Wizard"
+You are a ${role}!!!
 ```
 
 **2. If statements**
