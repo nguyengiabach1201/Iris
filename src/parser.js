@@ -177,10 +177,10 @@ export class Parser {
   }
 
   varStatement(token) {
-    if (this..content.split("=").length !== 2) this.error();
-    
-    let name = this.peek().content.split("=")[0].trim();
-    let value = this.peek().content.split("=")[1].trim();
+    if (this.content.split("=").length != 2) {
+      let name = this.peek().content.split("=")[0].trim();
+      let value = this.peek().content.split("=")[1].trim();
+    } else this.error("Variable declarment error", token.line);
     this.advance();
 
     function isValidVarName(name) {
