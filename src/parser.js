@@ -178,7 +178,7 @@ export class Parser {
 
   varStatement(token) {
     let name, value;
-    if (this.content.split("=").length == 2) {
+    if (this.peek().content.split("=").length == 2) {
       name = this.peek().content.split("=")[0].trim();
       value = this.peek().content.split("=")[1].trim();
     } else this.error("Variable declarment error", token.line);
